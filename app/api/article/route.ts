@@ -20,9 +20,10 @@ export async function GET() {
               }
             }
           })
+        // Retourne une réponse au format JSON
         return NextResponse.json(articles);
     } catch (error) {
-        console.error(error);
-        return { status: 500, body: { error: "Internal server error" } };
+        console.error("[ARTICLES]", error);
+        return new NextResponse("Internal Error", { status: 500 });
     }
 }
