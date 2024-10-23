@@ -3,15 +3,11 @@ import { formatDate } from '@/lib/utils'
 import Button from './Button';
 import Tag from './Tag';
 
-interface Article {
-    id: string;
-    title: string;
-    createdAt: Date; // Accepter Date au lieu de string
-    tags: { tag: { id: string; name: string } }[];
-    text: string;
+interface ArticleCardProps {
+    article: ArticleWithTagsAndComments;
 }
 
-const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
+const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
     return (
         <div 
             key={article.id} 
