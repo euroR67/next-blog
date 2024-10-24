@@ -1,7 +1,7 @@
 import React from 'react'
 import { formatDate } from '@/lib/utils'
-import Button from './Button';
 import Tag from './Tag';
+import DeleteButton from './DeleteButton';
 
 interface ArticleCardProps {
     article: ArticleWithTagsAndComments;
@@ -32,7 +32,9 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
             {/* Contenu de l'article */}
             <p className='mt-3 line-clamp-4'>{article.text}</p>
 
-            <Button href='/contact' label='Voir plus' />
+            <div className='sm:top-5 sm:right-5'>
+              <DeleteButton articleId={article.id} />
+            </div>
         </div>
     )
 }
