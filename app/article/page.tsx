@@ -45,13 +45,25 @@ const ArticlePage = () => {
     fetchArticles()
   }, [])
   
+  // Fonction handleDelete pour supprimer un article sans recharger la page
+  const handleDelete = (deletedArticleId: string) => {
+    // Met à jour l'état des articles en filtrant l'article supprimé
+    setArticles((prevArticles) =>
+      prevArticles.filter((article) => article.id !== deletedArticleId)
+    );
+  }
+
   return (
     <div className='p-5'>
         <h1 className='text-4xl font-bold mb-5'>Blog</h1>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
         {articles.map((article) => (
           <Link key={article.id} href={`/article/${article.id}`}>
-            <ArticleCard key={article.id} article={article} />
+            <ArticleCard
+            key={article.id}
+            article={article}
+            onDelete={handleDelete} // Passe la fonction handleDelete
+          />
           </Link>
         ))}
         </div>

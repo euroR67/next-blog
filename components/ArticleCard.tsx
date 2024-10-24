@@ -5,9 +5,30 @@ import DeleteButton from './DeleteButton';
 
 interface ArticleCardProps {
     article: ArticleWithTagsAndComments;
+    onDelete: (id: string) => void;
 }
 
-const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
+const ArticleCard: React.FC<ArticleCardProps> = ({ article, onDelete }) => {
+  
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await fetch(`/api/article/${article.id}/delete`, {
+        method: 'DELETE'
+      })
+
+      if (response.ok) {
+        onDelete(id);
+      }
+      
+    } catch (error) {
+        console.error('Error deleting article', error);
+    }
+  }
+  const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement>, id: string) => {
+      event.preventDefault();
+      event.stopPropagation();
+      handleDelete(id);
+  };
     return (
         <div 
             key={article.id} 
@@ -33,7 +54,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
             <p className='mt-3 line-clamp-4'>{article.text}</p>
 
             <div className='sm:top-5 sm:right-5'>
-              <DeleteButton articleId={article.id} />
+              <DeleteButton articleId={article.id} handleDelete={handleDeleteClick} />
             </div>
         </div>
     )
