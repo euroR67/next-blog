@@ -27,3 +27,26 @@ export async function GET() {
         return new NextResponse("Internal Error", { status: 500 });
     }
 }
+
+export async function POST(req: Request) {
+  try {
+    const { title, text } = await req.json();
+
+    const slug = title.toLowerCase().replace(/ /g, "-");
+
+    const article = await db.article.create({
+      data: {
+        title,
+        text: text,
+        slug,
+        createdAt: new Date(),
+      },
+    });
+
+    return NextResponse.json(article);
+    
+  } catch (error) {
+    console.error("[CREATE ARTICLE]", error);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}

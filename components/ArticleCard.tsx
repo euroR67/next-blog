@@ -41,7 +41,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onDelete }) => {
 
             {/* Liste des tags */}
             <div className='flex flex-wrap gap-2'>
-              {article.tags.map((tagArticle: { tag: { id: string; name: string } }) => (
+            {article.tags && article.tags.map((tagArticle: { tag: { id: string; name: string } }) => (
                 // <span 
                 //   key={tagArticle.tag.id} 
                 //   className='text-sm text-gray-500 p-1 px-3 my-2 bg-gray-100 rounded-full border hover:bg-emerald-600 duration-200 hover:text-white'>

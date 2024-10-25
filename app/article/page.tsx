@@ -53,6 +53,33 @@ const ArticlePage = () => {
     );
   }
 
+  // Fonction handleSubmit pour créer un article
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const title = (form.elements.namedItem("title") as HTMLInputElement).value;
+    const text = (form.elements.namedItem("text") as HTMLTextAreaElement)
+      .value;
+
+    try {
+      const response = await fetch("/api/article", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, text }),
+      });
+
+      if (response.ok) {
+        const newArticle: ArticleWithTagsAndComments = await response.json();
+        setArticles((prevArticles) => [newArticle, ...prevArticles]);
+
+        form.reset();
+      } else {
+        console.error("Erreur lors de la création de l'article");
+      }
+    } catch (error) {
+      console.error("[CREATE ARTICLE]", error);
+    }
+  };
   return (
     <div className='p-5'>
         <h1 className='text-4xl font-bold mb-5'>Blog</h1>
@@ -67,6 +94,21 @@ const ArticlePage = () => {
           </Link>
         ))}
         </div>
+        <form 
+          onSubmit={handleSubmit}
+          className='flex flex-col gap-y-2 w-[300ox] mt-5'>
+            <input 
+              className='px-2 py-1 rounded-sm border border-gray-300'
+              type="text" name="title" placeholder='Title'/>
+            <textarea
+              className='px-2 py-1 rounded-sm border border-gray-300'
+              name="text" placeholder='text'/>
+            <button 
+              type='submit'
+              className='mt-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
+              Create article
+            </button>
+        </form>
     </div>
   )
 }
