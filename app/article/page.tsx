@@ -58,8 +58,12 @@ const ArticlePage = () => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const title = (form.elements.namedItem("title") as HTMLInputElement).value;
-    const text = (form.elements.namedItem("text") as HTMLTextAreaElement)
-      .value;
+    const text = (form.elements.namedItem("text") as HTMLTextAreaElement).value;
+
+    if (!title || !text) {
+      alert("Veuillez remplir tous les champs.");
+      return;
+    }
 
     try {
       const response = await fetch("/api/article", {
@@ -77,7 +81,7 @@ const ArticlePage = () => {
         console.error("Erreur lors de la création de l'article");
       }
     } catch (error) {
-      console.error("[CREATE ARTICLE]", error);
+      console.error("Erreur lors de la création de l'article", error);
     }
   };
   return (

@@ -34,19 +34,28 @@ export async function POST(req: Request) {
 
     const slug = title.toLowerCase().replace(/ /g, "-");
 
+    // Vérification que les données requises sont bien présentes
+    if (!title || !text) {
+      return new Response(JSON.stringify({ message: "Missing title or text" }), {
+        status: 400,
+        headers: {'Content-Type': 'application/json'}
+      });
+    }
+
     const article = await db.article.create({
       data: {
         title,
         text: text,
         slug,
-        createdAt: new Date(),
       },
     });
 
-    return NextResponse.json(article);
-    
+    return new Response(JSON.stringify(article), {
+      status: 201,
+      headers: {'Content-Type': 'application/json'}
+    });
+
   } catch (error) {
-    console.error("[CREATE ARTICLE]", error);
-    return new NextResponse("Internal Error", { status: 500 });
+    console.error("Erreur lors de la création de l'article", error);
   }
 }
